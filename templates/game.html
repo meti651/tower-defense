@@ -1,9 +1,18 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <nav class="navbar navbar-light">
+    <nav class="navbar navbar-light game-nav">
         <button id="retry-button" class="btn btn-success">Try again</button>
         <a href="/" class="btn btn-outline-dark">Reset settings</a>
     </nav>
+    <div class="container game-board">
+        {% for row in range(5) %}
+            <div class="row">
+                {% for col in range(10) %}
+                    <div class="col game-cell"></div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}

@@ -2,12 +2,14 @@
     margin-bottom: 50px;
 }
 
-.game-board {
-    margin-left: 10vw;
-    height: 100%;
-}
-
-.game-cell {
-    height: 100px;
+.game-cell, .inventory-cell {
+    height: 125px;
+    width: 100px;
     border: 1px solid black;
 }
+
+.inventory {
+    padding-top: 20px;
+}
+
+

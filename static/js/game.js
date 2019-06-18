@@ -39,8 +39,9 @@ function drop_handler(ev) {
     newNode.classList.replace("inventory-cell", "active-plant");
 
     targetCell = event.target;
-    targetCell.removeAttribute("ondrop");
-    targetCell.removeAttribute("ondragover");
+
+    targetCell.removeEventListener("drop", drop_handler);
+    targetCell.removeEventListener("dragover", dragover_handler);
 
     ev.target.appendChild(newNode);
 }

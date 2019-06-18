@@ -16,6 +16,13 @@ function addEventInventory() {
     }
 }
 
+function addEventSpawn() {
+    let spawnCells = document.querySelectorAll("[data-col-number='9']")
+    for (cell of spawnCells) {
+        cell.addEventListener("spawn", function() {console.log("yes")});
+    }
+}
+
 
 function dragstart_handler(ev) {
     // Add the target element's id to the data transfer object
@@ -50,10 +57,14 @@ function drop_handler(ev) {
 
 function startSpawn() {
     let randomRow = Math.floor(Math.random() * 5);
-    let spawnCell = document.querySelectorAll("[data-col-number='9']")
-    spawnCell[randomRow].textContent = "X"
+    let spawnCells = document.querySelectorAll("[data-col-number='9']");
+    let theSpawnCell = spawnCells[randomRow];
+    theSpawnCell.textContent = "X";
 
+    let event = new Event('spawn');
+    theSpawnCell.dispatchEvent(event);
 }
+
 
 
 
@@ -65,6 +76,7 @@ function startSpawn() {
 function main() {
     addEventGameCells();
     addEventInventory();
+    addEventSpawn();
 
     let startButton = document.querySelector("#start-game");
     startButton.addEventListener("click", startSpawn);

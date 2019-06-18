@@ -6,16 +6,18 @@
         <a href="/" class="btn btn-outline-dark">Reset settings</a>
     </nav>
     <div class="container">
-        {% for row in range(5) %}
-            <div class="row justify-content-center game-board">
-                {% for col in range(10) %}
-                    <div class="game-cell"></div>
-                {% endfor %}
-            </div>
-        {% endfor %}
+        <div class="dropzone" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">
+            {% for row in range(5) %}
+                <div class="row justify-content-center game-board">
+                    {% for col in range(10) %}
+                        <div class="game-cell"></div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
         <div class="row justify-content-center inventory">
             {% for col in range(10) %}
-                <div class="inventory-cell"></div>
+                <div id="plant{{ col }}" class="inventory-cell" draggable="true" ondragstart="dragstart_handler(event);"></div>
             {% endfor %}
         </div>
     </div>

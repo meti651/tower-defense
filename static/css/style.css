@@ -1,0 +1,15 @@
+.game-nav {
+    margin-bottom: 50px;
+}
+
+.game-cell, .inventory-cell {
+    height: 125px;
+    width: 100px;
+    border: 1px solid black;
+}
+
+.inventory {
+    padding-top: 20px;
+}
+
+

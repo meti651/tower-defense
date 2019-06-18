@@ -1,15 +1,32 @@
+function addEventGameCells() {
+    let gameCells = document.querySelectorAll(".game-cell");
+    for (cell of gameCells) {
+        cell.addEventListener("drop", drop_handler);
+        cell.addEventListener("dragover", dragover_handler);
+    }
+}
+
+function addEventInventory() {
+    let inventoryCells = document.querySelectorAll((".inventory-cell"));
+    for (cell of inventoryCells) {
+        cell.setAttribute("draggable", "true");
+        cell.addEventListener("dragstart", dragstart_handler);
+    }
+}
+
+
 function dragstart_handler(ev) {
     // Add the target element's id to the data transfer object
     ev.dataTransfer.setData("text/plain", ev.target.id);
     ev.dataTransfer.dropEffect = "copy";
 }
 
+
 function dragover_handler(ev) {
     ev.preventDefault();
     // Set the dropEffect to move
     ev.dataTransfer.dropEffect = "copy"
 }
-
 
 function drop_handler(ev) {
     ev.preventDefault();
@@ -28,15 +45,9 @@ function drop_handler(ev) {
     ev.target.appendChild(newNode);
 }
 
-
 function main() {
-    let inventoryCells = document.querySelectorAll(".inventory-cell");
-    for (let i = 0; i < inventoryCells.length; i++) {
-        inventoryCells[i].textContent = i;
-    }
-
-
-
+    addEventGameCells();
+    addEventInventory()
 }
 
 main();

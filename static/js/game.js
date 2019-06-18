@@ -1,8 +1,10 @@
 function addEventGameCells() {
     let gameCells = document.querySelectorAll(".game-cell");
     for (cell of gameCells) {
-        cell.addEventListener("drop", drop_handler);
-        cell.addEventListener("dragover", dragover_handler);
+        if (cell.dataset.colNumber != "9") {
+            cell.addEventListener("drop", drop_handler);
+            cell.addEventListener("dragover", dragover_handler);
+        }
     }
 }
 
@@ -46,9 +48,26 @@ function drop_handler(ev) {
     ev.target.appendChild(newNode);
 }
 
+function startSpawn() {
+    let randomRow = Math.floor(Math.random() * 5);
+    let spawnCell = document.querySelectorAll("[data-col-number='9']")
+    spawnCell[randomRow].textContent = "X"
+
+}
+
+
+
+
+
+
+
+
 function main() {
     addEventGameCells();
-    addEventInventory()
+    addEventInventory();
+
+    let startButton = document.querySelector("#start-game");
+    startButton.addEventListener("click", startSpawn);
 }
 
 main();

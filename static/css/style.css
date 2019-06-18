@@ -8,6 +8,12 @@
     border: 1px solid black;
 }
 
+.active-plant {
+    height: 125px;
+    width: 100px;
+    border: 1px solid black;
+}
+
 .inventory {
     padding-top: 20px;
 }

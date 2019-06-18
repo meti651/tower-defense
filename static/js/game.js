@@ -19,7 +19,11 @@ function drop_handler(ev) {
     newNode.id = `newID${newNode.id}`;
     newNode.removeAttribute("draggable");
     newNode.removeAttribute("ondragstart");
-    newNode.classList.replace("inventory-cell", "active-plant")
+    newNode.classList.replace("inventory-cell", "active-plant");
+
+    targetCell = event.target;
+    targetCell.removeAttribute("ondrop");
+    targetCell.removeAttribute("ondragover");
 
     ev.target.appendChild(newNode);
 }

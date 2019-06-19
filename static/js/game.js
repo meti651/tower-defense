@@ -1,4 +1,4 @@
-// Drag and Drop functions
+// Drag and Drop functions + fire event on new plants
 
 function dragstart_handler(ev) {
     // Add the target element's id to the data transfer object
@@ -17,19 +17,27 @@ function drop_handler(ev) {
     ev.preventDefault();
     // Get the id of the target and add the moved element to the target's DOM
     let data = ev.dataTransfer.getData("text/plain");
-    let newNode = document.getElementById(data).cloneNode(true);
-    newNode.id = `${newNode.id}`;
-    newNode.removeAttribute("draggable");
-    newNode.removeAttribute("ondragstart");
-    newNode.classList.replace("inventory-cell", "active-plant");
+    let plant = document.getElementById(data).cloneNode(true);
+    plant.id = `${plant.id}`;
+    plant.removeAttribute("draggable");
+    plant.removeAttribute("ondragstart");
+    plant.classList.replace("inventory-cell", "active-plant");
+    plant.addEventListener("fire", spawnProjectile);
 
     targetCell = event.target;
 
     targetCell.removeEventListener("drop", drop_handler);
     targetCell.removeEventListener("dragover", dragover_handler);
 
-    ev.target.appendChild(newNode);
+    ev.target.appendChild(plant);
+
+    let fire = new Event("fire");
+    plant.dispatchEvent(fire);
+    setInterval(function() {
+        plant.dispatchEvent(fire)
+    }, 1000)
 }
+
 
 // Game start / adding events
 
@@ -72,17 +80,17 @@ function spawnEnemy() {
     let randomRow = String(Math.floor(Math.random() * 5));
     let spawnRow = document.getElementById(randomRow);
     let enemy = document.createElement("div");
-    enemy.addEventListener("spawn", myMove);
+    enemy.addEventListener("spawnEnemy", enemyMove);
     enemy.classList.add("enemy");
     spawnRow.appendChild(enemy);
 
-    let event = new Event('spawn');
+    let event = new Event('spawnEnemy');
     enemy.dispatchEvent(event);
 
 }
 
 
-function myMove() {
+function enemyMove() {
     let pos = 1069;
 
     let id = setInterval(frame, 30);
@@ -98,7 +106,41 @@ function myMove() {
     }
 }
 
+// plants shooting stuff
 
+function spawnProjectile() {
+    let plant = this;
+    let parentCol = parseInt(plant.parentNode.dataset.colNumber) + 0.5;
+    let grandParentRow = plant.parentNode.parentNode;
+    let projectileLeftCoordinate = parentCol * 100 + 70;
+
+    let projectile = document.createElement("div");
+    projectile.addEventListener("spawnProjectile", projectileMove);
+    projectile.classList.add("projectile");
+    projectile.style.left = projectileLeftCoordinate + "px";
+
+    grandParentRow.appendChild(projectile)
+
+    let ev = new Event('spawnProjectile');
+    projectile.dispatchEvent(ev);
+}
+
+function projectileMove() {
+    let id = setInterval(frame, 5);
+    let projectile = event.target;
+    let pos = projectile.style.left;
+    pos = parseInt(pos.slice(0, -2));
+
+    function frame() {
+        if (pos == 1070) {
+            clearInterval(id);
+            projectile.remove();
+        } else {
+            pos++;
+            projectile.style.left = pos + 'px';
+        }
+    }
+}
 
 
 

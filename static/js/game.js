@@ -6,7 +6,6 @@ function dragstart_handler(ev) {
     ev.dataTransfer.dropEffect = "copy";
 }
 
-
 function dragover_handler(ev) {
     ev.preventDefault();
     // Set the dropEffect to move
@@ -22,6 +21,7 @@ function drop_handler(ev) {
     plant.removeAttribute("draggable");
     plant.removeAttribute("ondragstart");
     plant.classList.replace("inventory-cell", "active-plant");
+    plant.classList.add("object");//to get the objects in a row
     plant.addEventListener("fire", spawnProjectile);
 
     targetCell = event.target;
@@ -43,7 +43,7 @@ function drop_handler(ev) {
 
 function addEventGameCells() {
     let gameCells = document.querySelectorAll(".game-cell");
-    for (cell of gameCells) {
+    for (let cell of gameCells) {
         if (cell.dataset.colNumber != "9") {
             cell.addEventListener("drop", drop_handler);
             cell.addEventListener("dragover", dragover_handler);
@@ -53,7 +53,7 @@ function addEventGameCells() {
 
 function addEventInventory() {
     let inventoryCells = document.querySelectorAll((".inventory-cell"));
-    for (cell of inventoryCells) {
+    for (let cell of inventoryCells) {
         cell.setAttribute("draggable", "true");
         cell.addEventListener("dragstart", dragstart_handler);
     }
@@ -83,6 +83,7 @@ function spawnEnemy() {
     enemy.addEventListener("spawnEnemy", enemyMove);
     enemy.classList.add("enemy");
     enemy.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a6e7ea16-118d-4afb-9e51-77dbbdfb633e/dai916o-45b8d628-c7d4-4b9d-a0e7-9b8e528c9c0a.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2E2ZTdlYTE2LTExOGQtNGFmYi05ZTUxLTc3ZGJiZGZiNjMzZVwvZGFpOTE2by00NWI4ZDYyOC1jN2Q0LTRiOWQtYTBlNy05YjhlNTI4YzljMGEuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BqlWOl1EsDgYvP1Ejuq-6khzqoHRfEYpdIfZQu6eA_Y"
+    enemy.classList.add("object");//to get the objects in a row
     spawnRow.appendChild(enemy);
 
     let event = new Event('spawnEnemy');
@@ -90,19 +91,50 @@ function spawnEnemy() {
 
 }
 
+function detect_hit(nearest_object, target) {
+    let actual_enemy_pos = target.getBoundingClientRect();
+    try {
+        let other_pos = nearest_object.getBoundingClientRect();
+        if (nearest_object.className === 'enemy object') {
+            return (other_pos.left + 10 < actual_enemy_pos.left)
+        }
+        return (other_pos.right + 10 < actual_enemy_pos.left);
+    } catch (err) {
+        return true;
+    }
+}
+
+
+function get_nearest_object(target) {
+    let parent = target.parentNode;
+    let objects = parent.querySelectorAll(".object");
+    let nearest_object;
+    let actual_enemy_pos = target.getBoundingClientRect();
+    for (let object of objects) {
+        let obj_pos = object.getBoundingClientRect();
+        if (obj_pos.right < actual_enemy_pos.right) {
+            nearest_object = object;
+        }
+    }
+    return nearest_object;
+}
 
 function enemyMove() {
-    let pos = 1069;
+    let enemy = event.target;
+    let pos = 1038;
 
     let id = setInterval(frame, 30);
-    let enemy = event.target;
 
     function frame() {
-        if (pos == 70) {
+        let nearest_object = get_nearest_object(enemy);
+        let is_touching = detect_hit(nearest_object, enemy);
+        if (pos === 70) {
             clearInterval(id);
         } else {
-            pos--;
-            enemy.style.left = pos + 'px';
+            if (is_touching) {
+                pos--;
+                enemy.style.left = pos + 'px';
+            }
         }
     }
 }
@@ -121,7 +153,7 @@ function spawnProjectile() {
     projectile.style.left = projectileLeftCoordinate + "px";
     projectile.style.top = "62px";
 
-    grandParentRow.appendChild(projectile)
+    grandParentRow.appendChild(projectile);
 
     let ev = new Event('spawnProjectile');
     projectile.dispatchEvent(ev);
@@ -134,7 +166,7 @@ function projectileMove() {
     pos = parseInt(pos.slice(0, -2));
 
     function frame() {
-        if (pos == 1070) {
+        if (pos === 1070) {
             clearInterval(id);
             projectile.remove();
         } else {
@@ -143,8 +175,6 @@ function projectileMove() {
         }
     }
 }
-
-
 
 function main() {
     addEventGameCells();

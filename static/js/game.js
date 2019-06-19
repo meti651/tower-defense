@@ -1,3 +1,5 @@
+// Drag and Drop functions
+
 function dragstart_handler(ev) {
     // Add the target element's id to the data transfer object
     ev.dataTransfer.setData("text/plain", ev.target.id);
@@ -16,7 +18,7 @@ function drop_handler(ev) {
     // Get the id of the target and add the moved element to the target's DOM
     let data = ev.dataTransfer.getData("text/plain");
     let newNode = document.getElementById(data).cloneNode(true);
-    newNode.id = `newID${newNode.id}`;
+    newNode.id = `${newNode.id}`;
     newNode.removeAttribute("draggable");
     newNode.removeAttribute("ondragstart");
     newNode.classList.replace("inventory-cell", "active-plant");
@@ -29,20 +31,7 @@ function drop_handler(ev) {
     ev.target.appendChild(newNode);
 }
 
-function myMove() {
-    let pos = 1069;
-    let id = setInterval(frame, 30);
-    let targetCellSpawn2 = event.target;
-
-    function frame() {
-        if (pos == 70) {
-            clearInterval(id);
-        } else {
-            pos--;
-            targetCellSpawn2.style.left = pos + 'px';
-        }
-  }
-}
+// Game start / adding events
 
 function addEventGameCells() {
     let gameCells = document.querySelectorAll(".game-cell");
@@ -62,8 +51,24 @@ function addEventInventory() {
     }
 }
 
+// Enemy spawn + enemy movement
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
 
 function spawnStart() {
+    for (let enemyNum = 0, minSec = 2, maxSec = 6; enemyNum <= 10; enemyNum++, minSec += 3, maxSec += 3) {
+        let randomNum = getRandomInt(minSec, maxSec) * 1000;
+        //let randomInterval = Math.floor(Math.random() * 10) * 1000;
+        //setInterval(spawnEnemy, randomInterval)
+        setTimeout(spawnEnemy, randomNum);
+    }
+}
+
+function spawnEnemy() {
     let randomRow = String(Math.floor(Math.random() * 5));
     let spawnRow = document.getElementById(randomRow);
     let enemy = document.createElement("div");
@@ -74,6 +79,23 @@ function spawnStart() {
     let event = new Event('spawn');
     enemy.dispatchEvent(event);
 
+}
+
+
+function myMove() {
+    let pos = 1069;
+
+    let id = setInterval(frame, 30);
+    let enemy = event.target;
+
+    function frame() {
+        if (pos == 70) {
+            clearInterval(id);
+        } else {
+            pos--;
+            enemy.style.left = pos + 'px';
+        }
+    }
 }
 
 

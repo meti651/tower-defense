@@ -6,7 +6,6 @@ function dragstart_handler(ev) {
     ev.dataTransfer.dropEffect = "copy";
 }
 
-
 function dragover_handler(ev) {
     ev.preventDefault();
     // Set the dropEffect to move
@@ -21,6 +20,7 @@ function drop_handler(ev) {
     newNode.id = `${newNode.id}`;
     newNode.removeAttribute("draggable");
     newNode.removeAttribute("ondragstart");
+    newNode.classList.add("object");//to get the objects in a row
     newNode.classList.replace("inventory-cell", "active-plant");
 
     targetCell = event.target;
@@ -74,6 +74,7 @@ function spawnEnemy() {
     let enemy = document.createElement("div");
     enemy.addEventListener("spawn", myMove);
     enemy.classList.add("enemy");
+    enemy.classList.add("object");//to get the objects in a row
     spawnRow.appendChild(enemy);
 
     let event = new Event('spawn');
@@ -81,25 +82,55 @@ function spawnEnemy() {
 
 }
 
-
-function myMove() {
-    let pos = 1069;
-
-    let id = setInterval(frame, 30);
-    let enemy = event.target;
-
-    function frame() {
-        if (pos == 70) {
-            clearInterval(id);
-        } else {
-            pos--;
-            enemy.style.left = pos + 'px';
+function detect_hit(nearest_object, target) {
+    let actual_enemy = target;
+    let actual_enemy_pos = actual_enemy.getBoundingClientRect();
+    try {
+        let other_pos = nearest_object.getBoundingClientRect();
+        if (nearest_object.className === 'enemy object') {
+            return (other_pos.left + 10 < actual_enemy_pos.left)
         }
+        return (other_pos.right + 10 < actual_enemy_pos.left);
+    } catch (err) {
+        return true;
     }
 }
 
 
+function get_nearest_object(target) {
+    let parent = target.parentNode;
+    let objects = parent.querySelectorAll(".object");
+    let nearest_object;
+    let actual_enemy_pos = target.getBoundingClientRect();
+    for (let object of objects) {
+        let obj_pos = object.getBoundingClientRect();
+        if (obj_pos.right < actual_enemy_pos.right) {
+            nearest_object = object;
+        }
+    }
+    return nearest_object;
+}
 
+
+function myMove() {
+    let enemy = event.target;
+    let pos = 1038;
+
+    let id = setInterval(frame, 30);
+
+    function frame() {
+        let nearest_object = get_nearest_object(enemy);
+        let is_touching = detect_hit(nearest_object, enemy);
+        if (pos == 70) {
+            clearInterval(id);
+        } else {
+            if (is_touching) {
+                pos--;
+                enemy.style.left = pos + 'px';
+            }
+        }
+    }
+}
 
 
 function main() {

@@ -21,7 +21,7 @@ function drop_handler(ev) {
     plant.removeAttribute("draggable");
     plant.removeAttribute("ondragstart");
     plant.classList.replace("inventory-cell", "active-plant");
-    newNode.classList.add("object");//to get the objects in a row
+    plant.classList.add("object");//to get the objects in a row
     plant.addEventListener("fire", spawnProjectile);
 
     targetCell = event.target;
@@ -43,7 +43,7 @@ function drop_handler(ev) {
 
 function addEventGameCells() {
     let gameCells = document.querySelectorAll(".game-cell");
-    for (cell of gameCells) {
+    for (let cell of gameCells) {
         if (cell.dataset.colNumber != "9") {
             cell.addEventListener("drop", drop_handler);
             cell.addEventListener("dragover", dragover_handler);
@@ -53,7 +53,7 @@ function addEventGameCells() {
 
 function addEventInventory() {
     let inventoryCells = document.querySelectorAll((".inventory-cell"));
-    for (cell of inventoryCells) {
+    for (let cell of inventoryCells) {
         cell.setAttribute("draggable", "true");
         cell.addEventListener("dragstart", dragstart_handler);
     }
@@ -91,8 +91,7 @@ function spawnEnemy() {
 }
 
 function detect_hit(nearest_object, target) {
-    let actual_enemy = target;
-    let actual_enemy_pos = actual_enemy.getBoundingClientRect();
+    let actual_enemy_pos = target.getBoundingClientRect();
     try {
         let other_pos = nearest_object.getBoundingClientRect();
         if (nearest_object.className === 'enemy object') {
@@ -118,6 +117,7 @@ function get_nearest_object(target) {
     }
     return nearest_object;
 }
+
 function enemyMove() {
     let enemy = event.target;
     let pos = 1038;
@@ -127,7 +127,7 @@ function enemyMove() {
     function frame() {
         let nearest_object = get_nearest_object(enemy);
         let is_touching = detect_hit(nearest_object, enemy);
-        if (pos == 70) {
+        if (pos === 70) {
             clearInterval(id);
         } else {
             if (is_touching) {
@@ -151,7 +151,7 @@ function spawnProjectile() {
     projectile.classList.add("projectile");
     projectile.style.left = projectileLeftCoordinate + "px";
 
-    grandParentRow.appendChild(projectile)
+    grandParentRow.appendChild(projectile);
 
     let ev = new Event('spawnProjectile');
     projectile.dispatchEvent(ev);
@@ -164,7 +164,7 @@ function projectileMove() {
     pos = parseInt(pos.slice(0, -2));
 
     function frame() {
-        if (pos == 1070) {
+        if (pos === 1070) {
             clearInterval(id);
             projectile.remove();
         } else {

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <nav class="navbar navbar-light game-nav">
+        <button id="retry-button" class="btn btn-success">Try again</button>
+        <button id="start-game" class="btn btn-success">I'm ready!</button>
+        <a href="/" class="btn btn-outline-dark">Reset settings</a>
+    </nav>
+    <div class="container">
+        {% for row in range(5) %}
+            <div id="{{ row }}" class="row justify-content-center game-row">
+                {% for col in range(10) %}
+                    <div class="game-cell" data-row-number="{{ row }}" data-col-number="{{ col }}"></div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="row justify-content-center inventory">
+            {% for col in range(10) %}
+                <div id="plant{{ col }}" class="inventory-cell">{{ col }}</div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

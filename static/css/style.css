@@ -22,9 +22,10 @@
 .enemy{
     height: 125px;
     width: 100px;
-    border: 1px solid black;
+    /*border: 1px solid black;
     position: absolute;
-    background-color: aqua;
+    background-color: aqua;*/
+    position: absolute;
     right: 0;
 }
 
@@ -34,10 +35,15 @@
 }
 
 .projectile {
-    height: 125px;
-    width: 100px;
+    height: 10px;
+    width: 10px;
     border: 1px solid black;
+    border-radius: 10px;
     position: absolute;
-    background-color: red;
+    background-color: black;
 
+}
+
+.plantimage {
+    content:url(https://media2.giphy.com/media/l0Iycn4fTzpH2C0I8/giphy.gif?cid=790b76115d0a473936394f726352569d&rid=giphy.gif);
 }

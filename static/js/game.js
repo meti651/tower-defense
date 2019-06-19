@@ -79,9 +79,10 @@ function spawnStart() {
 function spawnEnemy() {
     let randomRow = String(Math.floor(Math.random() * 5));
     let spawnRow = document.getElementById(randomRow);
-    let enemy = document.createElement("div");
+    let enemy = document.createElement("img");
     enemy.addEventListener("spawnEnemy", enemyMove);
     enemy.classList.add("enemy");
+    enemy.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a6e7ea16-118d-4afb-9e51-77dbbdfb633e/dai916o-45b8d628-c7d4-4b9d-a0e7-9b8e528c9c0a.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2E2ZTdlYTE2LTExOGQtNGFmYi05ZTUxLTc3ZGJiZGZiNjMzZVwvZGFpOTE2by00NWI4ZDYyOC1jN2Q0LTRiOWQtYTBlNy05YjhlNTI4YzljMGEuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BqlWOl1EsDgYvP1Ejuq-6khzqoHRfEYpdIfZQu6eA_Y"
     spawnRow.appendChild(enemy);
 
     let event = new Event('spawnEnemy');
@@ -118,6 +119,7 @@ function spawnProjectile() {
     projectile.addEventListener("spawnProjectile", projectileMove);
     projectile.classList.add("projectile");
     projectile.style.left = projectileLeftCoordinate + "px";
+    projectile.style.top = "62px";
 
     grandParentRow.appendChild(projectile)
 

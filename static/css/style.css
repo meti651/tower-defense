@@ -18,4 +18,16 @@
     padding-top: 20px;
 }
 
+.enemy{
+   height: 125px;
+    width: 100px;
+    border: 1px solid black;
+    position: absolute;
+    background-color: aqua;
+    right: 0;
+}
 
+.game-row{
+    position: relative;
+    width: auto;
+}

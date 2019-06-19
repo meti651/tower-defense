@@ -1,29 +1,3 @@
-function addEventGameCells() {
-    let gameCells = document.querySelectorAll(".game-cell");
-    for (cell of gameCells) {
-        if (cell.dataset.colNumber != "9") {
-            cell.addEventListener("drop", drop_handler);
-            cell.addEventListener("dragover", dragover_handler);
-        }
-    }
-}
-
-function addEventInventory() {
-    let inventoryCells = document.querySelectorAll((".inventory-cell"));
-    for (cell of inventoryCells) {
-        cell.setAttribute("draggable", "true");
-        cell.addEventListener("dragstart", dragstart_handler);
-    }
-}
-
-function addEventSpawn() {
-    let spawnCells = document.querySelectorAll("[data-col-number='9']")
-    for (cell of spawnCells) {
-        cell.addEventListener("spawn", function() {console.log("yes")});
-    }
-}
-
-
 function dragstart_handler(ev) {
     // Add the target element's id to the data transfer object
     ev.dataTransfer.setData("text/plain", ev.target.id);
@@ -55,19 +29,52 @@ function drop_handler(ev) {
     ev.target.appendChild(newNode);
 }
 
-function startSpawn() {
-    let randomRow = Math.floor(Math.random() * 5);
-    let spawnCells = document.querySelectorAll("[data-col-number='9']");
-    let theSpawnCell = spawnCells[randomRow];
-    theSpawnCell.textContent = "X";
+function myMove() {
+    let pos = 1069;
+    let id = setInterval(frame, 30);
+    let targetCellSpawn2 = event.target;
 
-    let event = new Event('spawn');
-    theSpawnCell.dispatchEvent(event);
+    function frame() {
+        if (pos == 70) {
+            clearInterval(id);
+        } else {
+            pos--;
+            targetCellSpawn2.style.left = pos + 'px';
+        }
+  }
+}
+
+function addEventGameCells() {
+    let gameCells = document.querySelectorAll(".game-cell");
+    for (cell of gameCells) {
+        if (cell.dataset.colNumber != "9") {
+            cell.addEventListener("drop", drop_handler);
+            cell.addEventListener("dragover", dragover_handler);
+        }
+    }
+}
+
+function addEventInventory() {
+    let inventoryCells = document.querySelectorAll((".inventory-cell"));
+    for (cell of inventoryCells) {
+        cell.setAttribute("draggable", "true");
+        cell.addEventListener("dragstart", dragstart_handler);
+    }
 }
 
 
+function spawnStart() {
+    let randomRow = String(Math.floor(Math.random() * 5));
+    let spawnRow = document.getElementById(randomRow);
+    let enemy = document.createElement("div");
+    enemy.addEventListener("spawn", myMove);
+    enemy.classList.add("enemy");
+    spawnRow.appendChild(enemy);
 
+    let event = new Event('spawn');
+    enemy.dispatchEvent(event);
 
+}
 
 
 
@@ -76,10 +83,9 @@ function startSpawn() {
 function main() {
     addEventGameCells();
     addEventInventory();
-    addEventSpawn();
 
     let startButton = document.querySelector("#start-game");
-    startButton.addEventListener("click", startSpawn);
+    startButton.addEventListener("click", spawnStart);
 }
 
 main();

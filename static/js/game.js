@@ -33,7 +33,6 @@ function drop_handler(ev) {
 
     let fire = new Event("fire");
 
-
     plant.dispatchEvent(fire);
     setInterval(function () {
         plant.dispatchEvent(fire)
@@ -143,11 +142,9 @@ function enemyMove() {
         let is_touching = detect_hit(nearest_object, enemy);
         if (pos === 70) {
             clearInterval(id);
-        } else {
-            if (is_touching) {
-                pos--;
-                enemy.style.left = pos + 'px';
-            }
+        } else if (is_touching) {
+            pos--;
+            enemy.style.left = pos + 'px';
         }
     }
 }

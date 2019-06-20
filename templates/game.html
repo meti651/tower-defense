@@ -1,16 +1,15 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <nav class="navbar navbar-light game-nav">
-        <button id="retry-button" class="btn btn-success">Try again</button>
+    <div class="nav-buttons justify-content-center">
         <button id="start-game" class="btn btn-success">I'm ready!</button>
-        <a href="/" class="btn btn-outline-dark">Reset settings</a>
-    </nav>
+        <a href="/" class="btn btn-success">Try again!</a>
+    </div>
     <div class="container">
         {% for row in range(5) %}
             <div id="{{ row }}" class="row justify-content-center game-row">
                 {% for col in range(10) %}
-                    <div class="game-cell" data-row-number="{{ row }}" data-col-number="{{ col }}"></div>
+                    <div class="game-cell {% if col % 2 == 0 %} {{ "oddcell" }} {% else %} {{ "evencell" }} {% endif %}" data-row-number="{{ row }}" data-col-number="{{ col }}"></div>
                 {% endfor %}
             </div>
         {% endfor %}

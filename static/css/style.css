@@ -1,3 +1,24 @@
+body {
+    background-color: #2d3f57;
+}
+
+.nav-buttons {
+    width: 200px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.oddcell {
+    background-color: #4a6991;
+    border-radius: 50px;
+}
+
+.evencell {
+    background-color: #384f6d;
+    border-radius: 50px;
+}
 
 .game-nav {
     margin-bottom: 50px;
@@ -6,13 +27,11 @@
 .game-cell, .inventory-cell {
     height: 125px;
     width: 100px;
-    border: 1px solid black;
 }
 
 .active-plant {
     height: 125px;
     width: 100px;
-    border: 1px solid black;
 }
 
 .inventory {
@@ -37,10 +56,9 @@
 .projectile {
     height: 10px;
     width: 10px;
-    border: 1px solid black;
     border-radius: 10px;
     position: absolute;
-    background-color: black;
+    background-color: #91006a;
 
 }
 

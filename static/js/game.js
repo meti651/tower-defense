@@ -33,9 +33,9 @@ function drop_handler(ev) {
 
     let fire = new Event("fire");
     plant.dispatchEvent(fire);
-    setInterval(function() {
+    setInterval(function () {
         plant.dispatchEvent(fire)
-    }, 1000)
+    }, 1500)
 }
 
 
@@ -57,6 +57,35 @@ function addEventInventory() {
         cell.setAttribute("draggable", "true");
         cell.addEventListener("dragstart", dragstart_handler);
     }
+}
+
+// Detecting hit stuff for enemies
+
+function detect_hit(nearest_object, target) {
+    let actual_enemy_pos = target.getBoundingClientRect();
+    try {
+        let other_pos = nearest_object.getBoundingClientRect();
+        if (nearest_object.className === 'enemy object') {
+            return (other_pos.left + 10 < actual_enemy_pos.left)
+        }
+        return (other_pos.right + 10 < actual_enemy_pos.left);
+    } catch (err) {
+        return true;
+    }
+}
+
+function get_nearest_object(target) {
+    let parent = target.parentNode;
+    let objects = parent.querySelectorAll(".object");
+    let nearest_object;
+    let actual_enemy_pos = target.getBoundingClientRect();
+    for (let object of objects) {
+        let obj_pos = object.getBoundingClientRect();
+        if (obj_pos.right < actual_enemy_pos.right) {
+            nearest_object = object;
+        }
+    }
+    return nearest_object;
 }
 
 // Enemy spawn + enemy movement
@@ -89,34 +118,6 @@ function spawnEnemy() {
     let event = new Event('spawnEnemy');
     enemy.dispatchEvent(event);
 
-}
-
-function detect_hit(nearest_object, target) {
-    let actual_enemy_pos = target.getBoundingClientRect();
-    try {
-        let other_pos = nearest_object.getBoundingClientRect();
-        if (nearest_object.className === 'enemy object') {
-            return (other_pos.left + 10 < actual_enemy_pos.left)
-        }
-        return (other_pos.right + 10 < actual_enemy_pos.left);
-    } catch (err) {
-        return true;
-    }
-}
-
-
-function get_nearest_object(target) {
-    let parent = target.parentNode;
-    let objects = parent.querySelectorAll(".object");
-    let nearest_object;
-    let actual_enemy_pos = target.getBoundingClientRect();
-    for (let object of objects) {
-        let obj_pos = object.getBoundingClientRect();
-        if (obj_pos.right < actual_enemy_pos.right) {
-            nearest_object = object;
-        }
-    }
-    return nearest_object;
 }
 
 function enemyMove() {
@@ -160,21 +161,39 @@ function spawnProjectile() {
 }
 
 function projectileMove() {
-    let id = setInterval(frame, 5);
+    let id = setInterval(frame, 50);
     let projectile = event.target;
     let pos = projectile.style.left;
     pos = parseInt(pos.slice(0, -2));
 
     function frame() {
-        if (pos === 1070) {
+        if (pos >= 1070) {
             clearInterval(id);
             projectile.remove();
-        } else {
-            pos++;
+        } else if (projectileHit(projectile)) {
+            pos += 5;
             projectile.style.left = pos + 'px';
         }
     }
 }
+
+// Detecting hit stuff for projectiles
+
+function projectileHit(projectile) {
+    let parentRow = projectile.parentNode;
+    let enemy = parentRow.querySelector(".enemy");
+
+    if (enemy && projectile.style.left >= enemy.style.left) {
+        projectile.remove();
+        enemy.remove();
+        return false
+    } else {
+        return true;
+    }
+}
+
+
+// Main function
 
 function main() {
     addEventGameCells();

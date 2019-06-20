@@ -2,6 +2,14 @@ body {
     background-color: #2d3f57;
 }
 
+.nav-buttons {
+    width: 200px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
 .oddcell {
     background-color: #4a6991;
     border-radius: 50px;
@@ -48,10 +56,9 @@ body {
 .projectile {
     height: 10px;
     width: 10px;
-    border: 1px solid black;
     border-radius: 10px;
     position: absolute;
-    background-color: black;
+    background-color: #91006a;
 
 }
 

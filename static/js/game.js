@@ -72,7 +72,8 @@ function detect_hit(nearest_object, target) {
         if (nearest_object.className === 'enemy object') {
             return (other_pos.left + 10 < actual_enemy_pos.left)
         }
-        return (other_pos.right + 10 < actual_enemy_pos.left);
+        return (other_pos.right + 10 < actual_enemy_pos.left)
+
     } catch (err) {
         return true;
     }
@@ -197,8 +198,11 @@ function didProjectileHit(projectile) {
     let enemy = parentRow.querySelector(".enemy");
 
     if (enemy && projectile.style.left >= enemy.style.left) {
+        enemy.dataset.hp = String(parseInt(enemy.dataset.hp) - 1);
+        if (enemy.dataset.hp == 0){
+            enemy.remove();
+        }
         projectile.remove();
-        enemy.remove();
         return true
     } else {
         return false;

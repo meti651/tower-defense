@@ -1,3 +1,16 @@
+body {
+    background-color: #2d3f57;
+}
+
+.oddcell {
+    background-color: #4a6991;
+    border-radius: 50px;
+}
+
+.evencell {
+    background-color: #384f6d;
+    border-radius: 50px;
+}
 
 .game-nav {
     margin-bottom: 50px;
@@ -6,13 +19,11 @@
 .game-cell, .inventory-cell {
     height: 125px;
     width: 100px;
-    border: 1px solid black;
 }
 
 .active-plant {
     height: 125px;
     width: 100px;
-    border: 1px solid black;
 }
 
 .inventory {

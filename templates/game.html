@@ -10,7 +10,7 @@
         {% for row in range(5) %}
             <div id="{{ row }}" class="row justify-content-center game-row">
                 {% for col in range(10) %}
-                    <div class="game-cell" data-row-number="{{ row }}" data-col-number="{{ col }}"></div>
+                    <div class="game-cell {% if col % 2 == 0 %} {{ "oddcell" }} {% else %} {{ "evencell" }} {% endif %}" data-row-number="{{ row }}" data-col-number="{{ col }}"></div>
                 {% endfor %}
             </div>
         {% endfor %}
